@@ -72,8 +72,8 @@ controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, mes
     }
 
     for (const message of json.messages) {
-      bot.botkit.log(JSON.stringify(message));
       const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
+
       if (matched) {
         result[matched[1].toLowerCase()].push({
           content: matched[2]
