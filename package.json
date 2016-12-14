@@ -1,0 +1,17 @@
+{
+  "name": "kpt-bot",
+  "version": "0.1.0",
+  "description": "KPT bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 6.0"
+  },
+  "dependencies": {
+    "botkit": "^0.4.3"
+  }
+}
