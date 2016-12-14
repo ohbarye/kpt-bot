@@ -26,7 +26,10 @@ bot.startRTM(function(err, bot, payload) {
 /*
    This KPI bot waits for you to call him. Here is sample usage.
 
-   Say: @bot-name 2016/11/01 2016/11/31
+   Format: @bot-name $from_date $to_date
+     - from_date: Required. Start of time range of messages.
+     - to_date:   Optional. End of time range of messages.
+   Sample: @bot-name 2016/11/01 2016/11/31
 
    The bot gathers KPTs you posted from 2016/11/01 and 2016/11/31
    from history of a channel you called the bot.
@@ -42,16 +45,21 @@ bot.startRTM(function(err, bot, payload) {
    ```
  */
 controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, message) => {
-  const [from, to] = message.match[0].split(' ');
+  const [from_date, to_date] = message.match[0].split(' ');
 
   let params = {
     token: slackBotToken,
     channel: message.channel,
-    oldest: (new Date(from) / 1000),
-    latest: (new Date(to) / 1000),
+    oldest: (new Date(from_date) / 1000),
     count: 1000,
   }
 
+  // `latest` is optional parameter, and its default value is `now`.
+  if (to_date) {
+    params.latest = new Date(to_date) / 1000
+  }
+
+  // https://api.slack.com/methods/channels.history
   bot.api.callAPI('channels.history', params, (err, json) => {
     if (err) {
       throw new Error(`Slack API returns an error. error code: ${err}`);
