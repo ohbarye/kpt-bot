@@ -26,12 +26,12 @@ bot.startRTM(function(err, bot, payload) {
 /*
    This KPI bot waits for you to call him. Here is sample usage.
 
-   Format: @bot-name $from_date $to_date
+   Format: @bot-name summary $from_date $to_date
      - from_date: Required. Start of time range of messages.
      - to_date:   Optional. End of time range of messages.
    Sample: @bot-name 2016/11/01 2016/11/31
 
-   The bot gathers KPTs you posted from 2016/11/01 and 2016/11/31
+   The bot gathers KPTs you posted between 2016/11/01 and 2016/11/31
    from history of a channel you called the bot.
 
    ```
@@ -44,8 +44,8 @@ bot.startRTM(function(err, bot, payload) {
    - How about going lunch? :smile:
    ```
  */
-controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, message) => {
-  const [from_date, to_date] = message.match[0].split(' ');
+controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], (bot, message) => {
+  const [from_date, to_date] = message.match[1].split(' ');
 
   let params = {
     token: slackBotToken,
@@ -89,6 +89,20 @@ controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, mes
 
   // https://api.slack.com/methods/users.list
   bot.api.callAPI('users.list', params, fetchUserListDone)
+});
+
+/*
+   If no command matched, show usage.
+ */
+controller.hears("^((?!summary).)*$",["direct_message","direct_mention","mention"], (bot, message) => {
+  const reply = `
+Sorry, I can't understand the order. :cry: Can you try again?
+Format: @bot-name summary $from_date $to_date
+ - from_date: Required. Start of time range of messages.
+ - to_date:   Optional. End of time range of messages.
+Sample: @bot-name 2016/11/01 2016/11/31
+`
+  bot.reply(message, reply);
 });
 
 const checkError = (err) => {
