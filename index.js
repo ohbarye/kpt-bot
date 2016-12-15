@@ -39,7 +39,7 @@ bot.startRTM(function(err, bot, payload) {
    - Started daily meeting
    - Find a release blocker earlier
    P
-   - Cannot help each other...
+   - Cannot help each other... :cry:
    T
    - How about going lunch? :smile:
    ```
@@ -59,38 +59,54 @@ controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, mes
     params.latest = new Date(to_date) / 1000
   }
 
-  // https://api.slack.com/methods/channels.history
-  bot.api.callAPI('channels.history', params, (err, json) => {
-    if (err) {
-      throw new Error(`Slack API returns an error. error code: ${err}`);
-    }
+  let users;
 
-    let result = {
-      k: [],
-      p: [],
-      t: [],
-    }
+  const fetchUserListDone = (err, res) => {
+    checkError(err)
+    users = res.members
+    // https://api.slack.com/methods/channels.history
+    bot.api.callAPI('channels.history', params, postSummary);
+  }
 
-    for (const message of json.messages) {
+  const postSummary = (err, res) => {
+    checkError(err)
+
+    let result = { K: [], P: [], T: [] }
+
+    for (const message of res.messages) {
       const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
 
       if (matched) {
-        result[matched[1].toLowerCase()].push({
-          content: matched[2]
+        result[matched[1].toUpperCase()].push({
+          content: matched[2],
+          userId: message.user
         });
       }
     }
 
-    const summary = `
-K
-${result.k.map((k) => `- ${k.content}` ).join('\n')}
-P
-${result.p.map((p) => `- ${p.content}` ).join('\n')}
-T
-${result.t.map((t) => `- ${t.content}` ).join('\n')}
-`
+    bot.reply(message, createSummary(result, users));
+  }
 
-    bot.reply(message, summary);
-  });
+  // https://api.slack.com/methods/users.list
+  bot.api.callAPI('users.list', params, fetchUserListDone)
 });
+
+const checkError = (err) => {
+  if (err) {
+    throw new Error(`Slack API returns an error. error code: ${err}`);
+  }
+}
+
+const createSummary = (result, users) => {
+  return ['K', 'P', 'T'].map((section) => {
+    return `## ${section}\n\n${createSectionSummary(result[section], users)}\n`
+  }).join('\n')
+}
+
+const createSectionSummary = (elements, users) => {
+  return elements.map(e => {
+    const username = users.find(u => u.id == e.userId).name
+    return `- ${e.content} by ${username}`
+  }).join('\n')
+}
 
