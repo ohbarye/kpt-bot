@@ -4,7 +4,8 @@
 
 It's a Slack bot to encourage us KPT retrospect.
 
-<img width="601" alt="2016-12-15 2 41 18" src="https://cloud.githubusercontent.com/assets/1811616/21193586/2282b71a-c270-11e6-99f8-d562cc02cfba.png">
+<img width="458" alt="2016-12-16 0 28 30" src="https://cloud.githubusercontent.com/assets/1811616/21229941/a6556f4a-c326-11e6-9f16-a30f28cde219.png">
+
 
 ## Usage
 
@@ -16,14 +17,14 @@ It's a Slack bot to encourage us KPT retrospect.
 
 ### Format
 
-`@bot-name $from_date $to_date`
+`@bot-name summary $from_date $to_date`
 
 - from_date: Required. Start of time range of messages.
 - to_date:   Optional. End of time range of messages.
 
 ### Sample
 
-`@bot-name 2016/11/01 2016/11/31`
+`@bot-name summary 2016/11/01 2016/11/31`
 
 The bot gathers KPTs you posted from 2016/11/01 and 2016/11/31 from history of a channel you called the bot.
 
