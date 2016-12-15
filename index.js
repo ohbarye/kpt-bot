@@ -60,37 +60,52 @@ controller.hears("(.+)",["direct_message","direct_mention","mention"], (bot, mes
   }
 
   // https://api.slack.com/methods/channels.history
-  bot.api.callAPI('channels.history', params, (err, json) => {
+  bot.api.callAPI('users.list', params, (err, users) => {
     if (err) {
       throw new Error(`Slack API returns an error. error code: ${err}`);
     }
 
-    let result = {
-      k: [],
-      p: [],
-      t: [],
-    }
-
-    for (const message of json.messages) {
-      const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
-
-      if (matched) {
-        result[matched[1].toLowerCase()].push({
-          content: matched[2]
-        });
+    // https://api.slack.com/methods/channels.history
+    bot.api.callAPI('channels.history', params, (err, history) => {
+      if (err) {
+        throw new Error(`Slack API returns an error. error code: ${err}`);
       }
-    }
 
-    const summary = `
+      let result = {
+        k: [],
+        p: [],
+        t: [],
+      }
+
+      for (const message of history.messages) {
+        const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
+
+        if (matched) {
+          result[matched[1].toLowerCase()].push({
+            content: matched[2],
+            userId: message.user
+          });
+        }
+      }
+
+      const summary = `
 K
-${result.k.map((k) => `- ${k.content}` ).join('\n')}
+${createSummary(result.k, users)}
 P
-${result.p.map((p) => `- ${p.content}` ).join('\n')}
+${createSummary(result.p, users)}
 T
-${result.t.map((t) => `- ${t.content}` ).join('\n')}
+${createSummary(result.t, users)}
 `
 
-    bot.reply(message, summary);
+      bot.reply(message, summary);
+    });
   });
 });
+
+const createSummary = (elements, users) => {
+  return elements.map(e => {
+    const username = users.members.find(u => u.id == e.userId).name
+    return `- ${e.content} by ${username}`
+  }).join('\n')
+}
 
