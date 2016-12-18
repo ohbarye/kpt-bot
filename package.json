@@ -9,6 +9,7 @@
     "node": ">= 6.0"
   },
   "dependencies": {
-    "botkit": "^0.4.3"
+    "botkit": "^0.4.3",
+    "redis": "^2.6.3"
   }
 }

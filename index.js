@@ -17,6 +17,9 @@ const bot = controller.spawn({
   token: slackBotToken
 })
 
+const redisUrl = process.env.REDIS_URL;
+const redisClient = redisUrl ? require('redis').createClient(redisUrl) : null;
+
 bot.startRTM(function(err, bot, payload) {
   if (err) {
     throw new Error('Could not connect to Slack');
@@ -44,51 +47,84 @@ bot.startRTM(function(err, bot, payload) {
    - How about going lunch? :smile:
    ```
  */
-controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], (bot, message) => {
-  const [from_date, to_date] = message.match[1].split(' ');
+controller.hears("^summary(?: (.+))?",["direct_message","direct_mention","mention"], (bot, message) => {
+  // Store into Redis as `last_summarized_at`.
+  const summarizedAt = new Date;
 
-  let params = {
-    token: slackBotToken,
-    channel: message.channel,
-    oldest: (new Date(from_date) / 1000),
-    count: 1000,
+  const parseParams = (next) => {
+    const [from_date, to_date] = message.match[1] ? message.match[1].split(' ') : [null, null];
+
+    let params = {
+      token: slackBotToken,
+      channel: message.channel,
+      count: 1000,
+    }
+
+    // `latest` is optional parameter, and its default value is `now`.
+    if (to_date) {
+      params.latest = new Date(to_date) / 1000
+    }
+
+    let oldest;
+
+    if (from_date) {
+      params.oldest = from_date;
+      next(params);
+    } else {
+      if (!redisClient) {
+        return bot.reply(message, 'To omit `$from_date`, you need to setup Redis :persevere:');
+      }
+
+      redisClient.get('last_summarized_at', (err, res) => {
+        if (err) {
+          return bot.reply(message, `Failed to fetch last summarized time: ${err}`);
+        }
+
+        if (!res) {
+          return bot.reply(message, 'Last summarized time is not set yet :astonished:\nPlease specify the date explicity.');
+        }
+
+        params.oldest = new Date(res) / 1000;
+        next(params);
+      });
+    }
   }
 
-  // `latest` is optional parameter, and its default value is `now`.
-  if (to_date) {
-    params.latest = new Date(to_date) / 1000
-  }
+  parseParams((params) => {
+    let users;
 
-  let users;
+    const fetchUserListDone = (err, res) => {
+      checkError(err)
+      users = res.members
+      // https://api.slack.com/methods/channels.history
+      bot.api.callAPI('channels.history', params, postSummary);
+    }
 
-  const fetchUserListDone = (err, res) => {
-    checkError(err)
-    users = res.members
-    // https://api.slack.com/methods/channels.history
-    bot.api.callAPI('channels.history', params, postSummary);
-  }
+    const postSummary = (err, res) => {
+      checkError(err)
 
-  const postSummary = (err, res) => {
-    checkError(err)
+      let result = { K: [], P: [], T: [] }
 
-    let result = { K: [], P: [], T: [] }
+      for (const message of res.messages) {
+        const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
 
-    for (const message of res.messages) {
-      const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
+        if (matched) {
+          result[matched[1].toUpperCase()].push({
+            content: matched[2],
+            userId: message.user
+          });
+        }
+      }
 
-      if (matched) {
-        result[matched[1].toUpperCase()].push({
-          content: matched[2],
-          userId: message.user
-        });
+      bot.reply(message, createSummary(result, users));
+      if (redisClient) {
+        redisClient.set('last_summarized_at', summarizedAt);
       }
     }
 
-    bot.reply(message, createSummary(result, users));
-  }
-
-  // https://api.slack.com/methods/users.list
-  bot.api.callAPI('users.list', params, fetchUserListDone)
+    // https://api.slack.com/methods/users.list
+    bot.api.callAPI('users.list', params, fetchUserListDone)
+  })
 });
 
 /*
