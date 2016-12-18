@@ -17,6 +17,15 @@ const bot = controller.spawn({
   token: slackBotToken
 })
 
+const redisUrl = process.env.REDIS_URL;
+
+if (!redisUrl) {
+  console.log('Error: Specify Redis URL in environment as REDIS_URL')
+  process.exit(1);
+}
+
+const redisClient = require('redis').createClient(process.env.REDIS_URL)
+
 bot.startRTM(function(err, bot, payload) {
   if (err) {
     throw new Error('Could not connect to Slack');
@@ -44,51 +53,78 @@ bot.startRTM(function(err, bot, payload) {
    - How about going lunch? :smile:
    ```
  */
-controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], (bot, message) => {
-  const [from_date, to_date] = message.match[1].split(' ');
+controller.hears("^summary(?: (.+))?",["direct_message","direct_mention","mention"], (bot, message) => {
+  // Store into Redis as `last_summarized_at`.
+  const summarizedAt = new Date;
 
-  let params = {
-    token: slackBotToken,
-    channel: message.channel,
-    oldest: (new Date(from_date) / 1000),
-    count: 1000,
-  }
+  const parseParams = (next) => {
+    const [from_date, to_date] = message.match[1] ? message.match[1].split(' ') : [null, null];
 
-  // `latest` is optional parameter, and its default value is `now`.
-  if (to_date) {
-    params.latest = new Date(to_date) / 1000
-  }
-
-  let users;
-
-  const fetchUserListDone = (err, res) => {
-    checkError(err)
-    users = res.members
-    // https://api.slack.com/methods/channels.history
-    bot.api.callAPI('channels.history', params, postSummary);
-  }
-
-  const postSummary = (err, res) => {
-    checkError(err)
-
-    let result = { K: [], P: [], T: [] }
-
-    for (const message of res.messages) {
-      const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
-
-      if (matched) {
-        result[matched[1].toUpperCase()].push({
-          content: matched[2],
-          userId: message.user
-        });
-      }
+    let params = {
+      token: slackBotToken,
+      channel: message.channel,
+      count: 1000,
     }
 
-    bot.reply(message, createSummary(result, users));
+    // `latest` is optional parameter, and its default value is `now`.
+    if (to_date) {
+      params.latest = new Date(to_date) / 1000
+    }
+
+    let oldest;
+
+    if (from_date) {
+      params.oldest = from_date;
+      next(params);
+    } else {
+      redisClient.get('last_summarized_at', (err, res) => {
+        if (err) {
+          return bot.reply(message, `Failed to fetch last summarized time: ${err}`);
+        }
+
+        if (!res) {
+          return bot.reply(message, 'Last summarized time is not set yet :astonished:\nPlease specify the date explicity.');
+        }
+
+        params.oldest = new Date(res) / 1000;
+        next(params);
+      })
+    }
   }
 
-  // https://api.slack.com/methods/users.list
-  bot.api.callAPI('users.list', params, fetchUserListDone)
+  parseParams((params) => {
+    let users;
+
+    const fetchUserListDone = (err, res) => {
+      checkError(err)
+      users = res.members
+      // https://api.slack.com/methods/channels.history
+      bot.api.callAPI('channels.history', params, postSummary);
+    }
+
+    const postSummary = (err, res) => {
+      checkError(err)
+
+      let result = { K: [], P: [], T: [] }
+
+      for (const message of res.messages) {
+        const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
+
+        if (matched) {
+          result[matched[1].toUpperCase()].push({
+            content: matched[2],
+            userId: message.user
+          });
+        }
+      }
+
+      bot.reply(message, createSummary(result, users));
+      redisClient.set('last_summarized_at', summarizedAt);
+    }
+
+    // https://api.slack.com/methods/users.list
+    bot.api.callAPI('users.list', params, fetchUserListDone)
+  })
 });
 
 /*
