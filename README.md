@@ -19,14 +19,22 @@ It's a Slack bot to encourage us KPT retrospect.
 
 `@bot-name summary $from_date $to_date`
 
-- from_date: Required. Start of time range of messages.
+- from_date: Optional. Start of time range of messages. With Redis, you can omit this from 2nd time.
 - to_date:   Optional. End of time range of messages.
 
 ### Sample
 
+#### Specify dates explicitly
+
 `@bot-name summary 2016/11/01 2016/11/31`
 
 The bot gathers KPTs you posted from 2016/11/01 and 2016/11/31 from history of a channel you called the bot.
+
+#### Omit dates
+
+`@bot-name summary`
+
+If you omit the dates, it summarizes KPTs from the last time to the current time.
 
 ## Why not use another tool?
 
@@ -57,3 +65,9 @@ If you want to deploy to Heroku, just click following button.
 Slack bot API token.
 
 If you do not have it yet, visit https://my.slack.com/services/new/bot and get the token.
+
+### REDIS_URL (optional)
+
+The URL of Redis to store the last time the bot summarized KPTs.
+
+Example: `redis://localhost:6379`
