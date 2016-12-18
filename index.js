@@ -18,13 +18,7 @@ const bot = controller.spawn({
 })
 
 const redisUrl = process.env.REDIS_URL;
-
-if (!redisUrl) {
-  console.log('Error: Specify Redis URL in environment as REDIS_URL')
-  process.exit(1);
-}
-
-const redisClient = require('redis').createClient(process.env.REDIS_URL)
+const redisClient = redisUrl ? require('redis').createClient(redisUrl) : null;
 
 bot.startRTM(function(err, bot, payload) {
   if (err) {
@@ -77,6 +71,10 @@ controller.hears("^summary(?: (.+))?",["direct_message","direct_mention","mentio
       params.oldest = from_date;
       next(params);
     } else {
+      if (!redisClient) {
+        return bot.reply(message, 'To omit `$from_date`, you need to setup Redis :persevere:');
+      }
+
       redisClient.get('last_summarized_at', (err, res) => {
         if (err) {
           return bot.reply(message, `Failed to fetch last summarized time: ${err}`);
@@ -88,7 +86,7 @@ controller.hears("^summary(?: (.+))?",["direct_message","direct_mention","mentio
 
         params.oldest = new Date(res) / 1000;
         next(params);
-      })
+      });
     }
   }
 
@@ -119,7 +117,9 @@ controller.hears("^summary(?: (.+))?",["direct_message","direct_mention","mentio
       }
 
       bot.reply(message, createSummary(result, users));
-      redisClient.set('last_summarized_at', summarizedAt);
+      if (redisClient) {
+        redisClient.set('last_summarized_at', summarizedAt);
+      }
     }
 
     // https://api.slack.com/methods/users.list
