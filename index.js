@@ -79,7 +79,8 @@ controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], 
       if (matched) {
         result[matched[1].toUpperCase()].push({
           content: matched[2],
-          userId: message.user
+          userId: message.user,
+          reactions: (message.reactions || []),
         });
       }
     }
@@ -119,8 +120,9 @@ const createSummary = (result, users) => {
 
 const createSectionSummary = (elements, users) => {
   return elements.map(e => {
-    const username = users.find(u => u.id == e.userId).name
-    return `- ${e.content} by ${username}`
+    const username = users.find(u => u.id == e.userId).name;
+    const reactions = e.reactions.map(r => ` :${r.name}: `.repeat(r.count)).join('');
+
+    return `- ${e.content} by ${username} ${reactions}`;
   }).join('\n')
 }
-
