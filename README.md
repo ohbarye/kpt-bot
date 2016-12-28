@@ -4,8 +4,7 @@
 
 It's a Slack bot to encourage us KPT retrospect.
 
-<img width="458" alt="2016-12-16 0 28 30" src="https://cloud.githubusercontent.com/assets/1811616/21229941/a6556f4a-c326-11e6-9f16-a30f28cde219.png">
-
+<img width="599" alt="2016-12-24 11 37 38" src="https://cloud.githubusercontent.com/assets/1811616/21464850/942acbdc-c9cd-11e6-92f5-79cc0453b8d9.png">
 
 ## Usage
 
@@ -38,9 +37,9 @@ Slack is now our "daily use" tool and their is less barriars to prevent us to tr
 
 ## Develop
 
-```bash
-$ git clone
-$ npm install
+```sh
+$ git clone git@github.com:ohbarye/kpt-bot.git
+$ npm install -g yarn && yarn
 $ SLACK_BOT_TOKEN=your-slack-bot-token node index.js
 ```
 
