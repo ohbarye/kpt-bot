@@ -23,9 +23,9 @@ It's a Slack bot to encourage us KPT retrospect.
 
 ### Sample
 
-`@bot-name summary 2016/11/01 2016/11/31`
+`@bot-name summary 2016/11/01 2016/11/30`
 
-The bot gathers KPTs you posted from 2016/11/01 and 2016/11/31 from history of a channel you called the bot.
+The bot gathers KPTs you posted from 2016/11/01 and 2016/11/30 from history of a channel you called the bot.
 
 ## Why not use another tool?
 
