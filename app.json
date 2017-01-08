@@ -1,0 +1,27 @@
+{
+  "name": "kpt-bot",
+  "description": "Slack bot to encourage our KPT retrospect",
+  "keywords": [
+    "KPT",
+    "Slack",
+    "Bot"
+  ],
+  "website": "https://github.com/ohbarye/kpt-bot",
+  "repository": "https://github.com/ohbarye/kpt-bot",
+  "env": {
+    "SLACK_BOT_TOKEN": {
+      "description": "Slack bot API token: https://my.slack.com/services/new/bot"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 0,
+      "size": "hobby"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "hobby"
+    }
+  },
+  "image": "heroku/nodejs"
+}
