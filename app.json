@@ -13,9 +13,6 @@
       "description": "Slack bot API token: https://my.slack.com/services/new/bot"
     }
   },
-  "addons": [
-    "heroku-redis"
-  ],
   "formation": {
     "web": {
       "quantity": 0,
