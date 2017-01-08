@@ -56,7 +56,9 @@ controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], 
 
   // `latest` is optional parameter, and its default value is `now`.
   if (to_date) {
-    params.latest = new Date(to_date) / 1000
+    // When the given date is formatted as `2017/1/5`, it will be handled as `End time of the 2017/01/05`
+    to_time = /^\d+\/\d{1,2}\/\d{1,2}$/.test(to_date) ? (to_date + " 23:59:59:999" ) : to_date
+    params.latest = new Date(to_time) / 1000
   }
 
   let users;
