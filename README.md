@@ -23,9 +23,9 @@ It's a Slack bot to encourage us KPT retrospect.
 
 ### Sample
 
-`@bot-name summary 2016/11/01 2016/11/30`
+`@bot-name summary 2016-11-01 2016-11-30`
 
-The bot gathers KPTs you posted from 2016/11/01 and 2016/11/30 from history of a channel you called the bot.
+The bot gathers KPTs you posted from 2016-11-01 and 2016-11-30 from history of a channel you called the bot.
 
 ## Why not use another tool?
 
@@ -33,7 +33,7 @@ Actually, there are many tools to do it, but most of them are not for "daily use
 
 We think of good ideas anytime we live. To memoize them, you open your laptop and start the app or web site to record your ideas. If you're out and do not have a good device to do it... Ugh, that's tiresome.
 
-Slack is now our "daily use" tool and their is less barriars to prevent us to track our KPTs.
+Slack is now our "daily use" tool and their is less barriers to prevent us to track our KPTs.
 
 ## Develop
 

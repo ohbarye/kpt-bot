@@ -34,9 +34,9 @@ bot.startRTM(function(err, bot, payload) {
    Format: @bot-name summary $from_date $to_date
      - from_date: Required. Start of time range of messages.
      - to_date:   Optional. End of time range of messages.
-   Sample: @bot-name 2016/11/01 2016/11/30
+   Sample: @bot-name 2016-11-01 2016-11-30
 
-   The bot gathers KPTs you posted between 2016/11/01 and 2016/11/30
+   The bot gathers KPTs you posted between 2016-11-01 and 2016-11-30
    from history of a channel you called the bot.
 
    ```
@@ -93,7 +93,7 @@ Sorry, I can't understand the order. :cry: Can you try again?
 Format: @bot-name summary $from_date $to_date
  - from_date: Required. Start of time range of messages.
  - to_date:   Optional. End of time range of messages.
-Sample: @bot-name summary 2016/11/01 2016/11/30
+Sample: @bot-name summary 2016-11-01 2016-11-30
 `
   bot.reply(message, reply);
 });
