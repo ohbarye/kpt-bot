@@ -9,6 +9,7 @@
     "node": ">= 6.0"
   },
   "dependencies": {
-    "botkit": "^0.4.3"
+    "botkit": "^0.4.3",
+    "moment-timezone": "^0.5.11"
   }
 }
