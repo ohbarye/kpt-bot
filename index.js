@@ -1,6 +1,7 @@
 'use strict';
 
 const Botkit = require('botkit');
+const moment = require('moment-timezone');
 
 const slackBotToken = process.env.SLACK_BOT_TOKEN;
 
@@ -118,18 +119,22 @@ const createSectionSummary = (elements, users) => {
   }).join('\n')
 };
 
-const paramsToFetchChannelHistory = (message) => {
+const paramsToFetchChannelHistory = (message, users) => {
   const [from_date, to_date] = message.match[1].split(' ');
+
+  const userTimezone = users.find(u => u.id == message.user).tz;
 
   let params = Object.assign(commonParams, {
     channel: message.channel,
-    oldest: (new Date(from_date) / 1000),
+    oldest: moment.tz(from_date, userTimezone).unix(),
     count: 1000,
   });
 
   // `latest` is optional parameter, and its default value is `now`.
   if (to_date) {
-    params = Object.assign(params, {latest: new Date(to_date) / 1000});
+    params = Object.assign(params, {
+      latest: moment.tz(to_date, userTimezone).endOf('day').unix(),
+    });
   }
   return params;
 };
