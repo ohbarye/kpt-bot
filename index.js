@@ -31,13 +31,16 @@ bot.startRTM(function(err, bot, payload) {
 /*
    This KPI bot waits for you to call him. Here is sample usage.
 
-   Format: @bot-name summary $from_date $to_date
+   Format:
+     @bot-name summary $from_date $to_date
      - from_date: Required. Start of time range of messages.
      - to_date:   Optional. End of time range of messages.
-   Sample: @bot-name 2016-11-01 2016-11-30
 
-   The bot gathers KPTs you posted between 2016-11-01 and 2016-11-30
-   from history of a channel you called the bot.
+   Sample:
+     @bot-name 2016-11-01 2016-11-30
+
+     The bot gathers KPTs you posted 2016-11-01 00:00:00 to 2016-11-30 23:59:59 in your timezone
+     from history of a channel you called the bot.
 
    ```
    K
@@ -90,11 +93,16 @@ controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], 
 controller.hears("^((?!summary).)*$",["direct_message","direct_mention","mention"], (bot, message) => {
   const reply = `
 Sorry, I can't understand the order. :cry: Can you try again?
-Format: @bot-name summary $from_date $to_date
- - from_date: Required. Start of time range of messages.
- - to_date:   Optional. End of time range of messages.
-Sample: @bot-name summary 2016-11-01 2016-11-30
-`
+
+Format:
+  @bot-name summary $from_date $to_date
+  - from_date: Required. Start of time range of messages.
+  - to_date:   Optional. End of time range of messages.
+
+Sample:
+  @bot-name summary 2016-11-01 2016-11-30
+  @bot-name summary 2016-11-01
+`;
   bot.reply(message, reply);
 });
 
