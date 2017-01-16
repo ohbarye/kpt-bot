@@ -124,7 +124,7 @@ const createSectionSummary = (elements, users) => {
     const reactions = e.reactions.map(r => ` :${r.name}: `.repeat(r.count)).join('');
 
     return `- ${e.content} by ${username} ${reactions}`;
-  }).reverse.join('\n')
+  }).reverse().join('\n')
 };
 
 const paramsToFetchChannelHistory = (message, users) => {
