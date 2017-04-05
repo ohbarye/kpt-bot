@@ -69,6 +69,10 @@ controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], 
     let result = { K: [], P: [], T: [] };
 
     for (const message of res.messages) {
+      if (!message.text) {
+        continue;
+      }
+
       const matched = message.text.match(/^([KkPpTt])\s+(.+)/);
 
       if (matched) {
