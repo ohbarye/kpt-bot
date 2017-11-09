@@ -49,6 +49,20 @@ If you want to deploy to Heroku, just click following button.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
+### Run with Docker
+
+First build the image.
+
+```
+docker build -t kpt-bot .
+```
+
+Run the bot image by specifying your slack bot token.
+
+```
+docker run -e SLACK_BOT_TOKEN=your-slack-bot-token kpt-bot
+```
+
 ## Environment Variables
 
 ### SLACK_BOT_TOKEN (required)
