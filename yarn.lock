@@ -199,8 +199,8 @@ acorn@^4.0.3:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
 
 agent-base@^4.1.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.1.1.tgz#92d8a4fc2524a3b09b3666a33b6c97960f23d6a4"
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.1.2.tgz#80fa6cde440f4dcf9af2617cf246099b5d99f0c8"
   dependencies:
     es6-promisify "^5.0.0"
 
@@ -212,8 +212,8 @@ ajv@^4.9.1:
     json-stable-stringify "^1.0.1"
 
 ajv@^5.1.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.3.0.tgz#4414ff74a50879c208ee5fdc826e32c303549eda"
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.0.tgz#eb2840746e9dc48bd5e063a36e3fd400c5eab5a9"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
@@ -377,8 +377,8 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
 base62@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/base62/-/base62-1.2.0.tgz#31e7e560dc846c9f44c1a531df6514da35474157"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/base62/-/base62-1.2.1.tgz#95a5a22350b0a557f3f081247fc2c398803ecb0c"
 
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"
@@ -430,8 +430,8 @@ boom@5.x.x:
     hoek "4.x.x"
 
 botbuilder@^3.8.4:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-3.11.0.tgz#6869cbd13394576badb5f7eb2ad58a3651c0ac1c"
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-3.12.0.tgz#1b605d51b37659d4c9b0a3dd8bf2105788c17d1d"
   dependencies:
     async "^1.5.2"
     base64url "^2.0.0"
@@ -443,26 +443,26 @@ botbuilder@^3.8.4:
     sprintf-js "^1.0.3"
     url-join "^1.1.0"
 
-botkit-studio-sdk@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/botkit-studio-sdk/-/botkit-studio-sdk-1.0.3.tgz#324e60b9d7db34b1265c5470e8cbeb4a2140e4b5"
+botkit-studio-sdk@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/botkit-studio-sdk/-/botkit-studio-sdk-1.0.4.tgz#f085e193779ecb94509f41196454f9f85c7c7835"
   dependencies:
     promise "^7.1.1"
     request "^2.67.0"
 
 botkit@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/botkit/-/botkit-0.6.6.tgz#aec0f001b1d67649e708cdc9fd4e6309c9341477"
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/botkit/-/botkit-0.6.7.tgz#8d6e02fb90339b528cd03042eae23f46b1d69f13"
   dependencies:
     async "^2.1.5"
     back "^1.0.1"
     body-parser "^1.17.1"
     botbuilder "^3.8.4"
-    botkit-studio-sdk "^1.0.3"
+    botkit-studio-sdk "^1.0.4"
     ciscospark "1.8.0"
     clone "2.1.1"
     command-line-args "^4.0.2"
-    debug "^2.6.6"
+    debug "^2.6.9"
     express "^4.15.2"
     https-proxy-agent "^2.0.0"
     jfs "^0.2.6"
@@ -593,8 +593,8 @@ command-line-args@^4.0.2:
     typical "^2.6.1"
 
 commander@^2.5.0, commander@^2.9.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.1.tgz#468635c4168d06145b9323356d1da84d14ac4a7a"
 
 commoner@^0.10.1:
   version "0.10.8"
@@ -670,7 +670,7 @@ debug@2.6.8:
   dependencies:
     ms "2.0.0"
 
-debug@2.6.9, debug@^2.4.1, debug@^2.6.6:
+debug@2.6.9, debug@^2.4.1, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
@@ -1891,8 +1891,8 @@ ultron@1.0.x:
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
 
 ultron@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.0.tgz#b07a2e6a541a815fc6a34ccd4533baec307ca864"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
 
 underscore@1.x:
   version "1.8.3"
