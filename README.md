@@ -18,22 +18,22 @@ It's a Slack bot to encourage us KPT retrospect.
 
 `@bot-name summary $from_date $to_date`
 
-- from_date: Required. Start of time range of messages.
-- to_date:   Optional. End of time range of messages.
+- from_date: Required. Start of a time range of messages.
+- to_date:   Optional. End of a time range of messages.
 
 ### Sample
 
 `@bot-name summary 2016-11-01 2016-11-30`
 
-The bot gathers KPTs you posted from 2016-11-01 and 2016-11-30 from history of a channel you called the bot.
+The bot gathers KPTs you posted from 2016-11-01 and 2016-11-30 from a history of a channel you called the bot.
 
 ## Why not use another tool?
 
 Actually, there are many tools to do it, but most of them are not for "daily use".
 
-We think of good ideas anytime we live. To memoize them, you open your laptop and start the app or web site to record your ideas. If you're out and do not have a good device to do it... Ugh, that's tiresome.
+We think of good ideas anytime we live. To memorize them, you open your laptop and start the app or website to record your ideas. If you're out and do not have a good device to do it... Ugh, that's tiresome.
 
-Slack is now our "daily use" tool and their is less barriers to prevent us to track our KPTs.
+Slack is now our "daily use" tool and there are fewer barriers to prevent us to track our KPTs.
 
 ## Develop
 
@@ -51,15 +51,10 @@ If you want to deploy to Heroku, just click following button.
 
 ### Run with Docker
 
-First build the image.
+Pull the Docker image and run with your Slack bot token.
 
-```
-docker build -t kpt-bot .
-```
-
-Run the bot image by specifying your slack bot token.
-
-```
+```bash
+docker docker pull ohbarye/kpt-bot
 docker run -e SLACK_BOT_TOKEN=your-slack-bot-token kpt-bot
 ```
 
