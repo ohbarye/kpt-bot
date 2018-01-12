@@ -54,7 +54,7 @@ If you want to deploy to Heroku, just click following button.
 Pull the Docker image and run with your Slack bot token.
 
 ```bash
-docker docker pull ohbarye/kpt-bot
+docker pull ohbarye/kpt-bot
 docker run -e SLACK_BOT_TOKEN=your-slack-bot-token kpt-bot
 ```
 
