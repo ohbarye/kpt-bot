@@ -55,7 +55,7 @@ Pull the Docker image and run with your Slack bot token.
 
 ```bash
 docker pull ohbarye/kpt-bot
-docker run -e SLACK_BOT_TOKEN=your-slack-bot-token kpt-bot
+docker run -e SLACK_BOT_TOKEN=your-slack-bot-token ohbarye/kpt-bot
 ```
 
 ## Environment Variables
