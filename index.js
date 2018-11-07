@@ -37,7 +37,7 @@ bot.startRTM(function(err, bot, payload) {
      - to_date:   Optional. End of time range of messages.
 
    Sample:
-     @bot-name 2016-11-01 2016-11-30
+     @bot-name summary 2016-11-01 2016-11-30
 
      The bot gathers KPTs you posted 2016-11-01 00:00:00 to 2016-11-30 23:59:59 in your timezone
      from history of a channel you called the bot.
