@@ -40,7 +40,7 @@ Slack is now our "daily use" tool and there are fewer barriers to prevent us to 
 ```sh
 $ git clone git@github.com:ohbarye/kpt-bot.git
 $ npm install -g yarn && yarn
-$ SLACK_BOT_TOKEN=your-slack-bot-token node index.js
+$ SLACK_BOT_TOKEN=your-slack-bot-token yarn start
 ```
 
 ## Deployment
