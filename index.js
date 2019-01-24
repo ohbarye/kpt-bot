@@ -100,7 +100,7 @@ Sorry, I can't understand the order. :cry: Can you try again?
 
 Format:
   @bot-name summary $from_date $to_date
-  - from_date: Required. Start of time range of messages.
+  - from_date: Optional. Start of time range of messages.
   - to_date:   Optional. End of time range of messages.
 
 Sample:
