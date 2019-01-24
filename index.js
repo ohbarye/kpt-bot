@@ -124,7 +124,7 @@ const createSummary = (result, users) => {
 
 const createSectionSummary = (elements, users) => {
   return elements.map(e => {
-    const username = users.find(u => u.id == e.userId).name;
+    const username = users.find(u => u.id === e.userId).name;
     const reactions = e.reactions.map(r => ` :${r.name}: `.repeat(r.count)).join('');
 
     return `- ${e.content} by ${username} ${reactions}`;
@@ -134,7 +134,7 @@ const createSectionSummary = (elements, users) => {
 const paramsToFetchChannelHistory = (message, users) => {
   const [from_date, to_date] = message.match[1].split(' ');
 
-  const userTimezone = users.find(u => u.id == message.user).tz;
+  const userTimezone = users.find(u => u.id === message.user).tz;
 
   let params = Object.assign(commonParams, {
     channel: message.channel,
