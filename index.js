@@ -15,7 +15,8 @@ const commonParams = {
 };
 
 const controller = Botkit.slackbot({
-  debug: !!process.env.DEBUG
+  debug: !!process.env.DEBUG,
+  stats_optout: true
 });
 
 const bot = controller.spawn({
