@@ -15,7 +15,8 @@ const commonParams = {
 };
 
 const controller = Botkit.slackbot({
-  debug: !!process.env.DEBUG
+  debug: !!process.env.DEBUG,
+  stats_optout: true
 });
 
 const bot = controller.spawn({
@@ -52,7 +53,7 @@ bot.startRTM(function(err, bot, payload) {
    - How about going lunch? :smile:
    ```
  */
-controller.hears("^summary (.+)",["direct_message","direct_mention","mention"], (bot, message) => {
+controller.hears("^summary ?(.+)?",["direct_message","direct_mention","mention"], (bot, message) => {
   let users;
 
   const fetchUserListDone = (err, res) => {
@@ -100,7 +101,7 @@ Sorry, I can't understand the order. :cry: Can you try again?
 
 Format:
   @bot-name summary $from_date $to_date
-  - from_date: Required. Start of time range of messages.
+  - from_date: Optional. Start of time range of messages.
   - to_date:   Optional. End of time range of messages.
 
 Sample:
@@ -124,17 +125,31 @@ const createSummary = (result, users) => {
 
 const createSectionSummary = (elements, users) => {
   return elements.map(e => {
-    const username = users.find(u => u.id == e.userId).name;
+    const username = users.find(u => u.id === e.userId).name;
     const reactions = e.reactions.map(r => ` :${r.name}: `.repeat(r.count)).join('');
 
     return `- ${e.content} by ${username} ${reactions}`;
   }).reverse().join('\n')
 };
 
-const paramsToFetchChannelHistory = (message, users) => {
-  const [from_date, to_date] = message.match[1].split(' ');
+const parseGivenDates = (message) => {
+  if (message.match[1]) {
+    // If both `from_date and `to_date` are given, or `from_date` is given
+    return message.match[1].split(' ');
+  } else {
+    // If none is given
+    const currentUnixTime = moment().unix();
+    const currentTime = moment(currentUnixTime * 1000);
+    const from_date = currentTime.tz('Asia/Tokyo').startOf('day').unix();
 
-  const userTimezone = users.find(u => u.id == message.user).tz;
+    return [from_date, undefined];
+  }
+};
+
+const paramsToFetchChannelHistory = (message, users) => {
+  const [from_date, to_date] = parseGivenDates(message);
+
+  const userTimezone = users.find(u => u.id === message.user).tz;
 
   let params = Object.assign(commonParams, {
     channel: message.channel,

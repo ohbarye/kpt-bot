@@ -18,7 +18,7 @@ It's a Slack bot to encourage us KPT retrospect.
 
 `@bot-name summary $from_date $to_date`
 
-- from_date: Required. Start of a time range of messages.
+- from_date: Optional. Start of a time range of messages.
 - to_date:   Optional. End of a time range of messages.
 
 ### Sample
@@ -40,7 +40,7 @@ Slack is now our "daily use" tool and there are fewer barriers to prevent us to 
 ```sh
 $ git clone git@github.com:ohbarye/kpt-bot.git
 $ npm install -g yarn && yarn
-$ SLACK_BOT_TOKEN=your-slack-bot-token node index.js
+$ SLACK_BOT_TOKEN=your-slack-bot-token yarn start
 ```
 
 ## Deployment
