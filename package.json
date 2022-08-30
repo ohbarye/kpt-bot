@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "botkit": "^0.6.6",
-    "moment-timezone": "^0.5.14"
+    "moment-timezone": "^0.5.35"
   }
 }
